@@ -16,11 +16,38 @@
         padding-left: 10px;
     }
 
+    h1{
+        display: inline-block;
+    }
+    .t_right{
+        display: inline-block;
+        margin-left: 500px;
+    }
+    .back{
+        display: inline-block;
+    }
+    .logout{
+        display: inline-block;
+        margin-left: 20px;
+    }
     </style>
 </head>
 <body>
+    <div>
+            <h1>{{posted_user}}'s Quotes</h1>
 
-    <h1>{{posted_user}}'s Quotes</h1>
+            <div class = "t_right">
+                <div class = "back">
+                    <a href = "/home">Back</a>
+                </div>
+                <div class= "logout">
+                    <form action="/logout" method = "post">
+                        {%csrf_token%}
+                        <input type="submit" name = "submit" value = "Logout">
+                    </form>
+                </div>
+            </div>
+    </div>
     {%if objs%}
 
         {%for obj in objs%}
