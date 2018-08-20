@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+    .post{
+        width : 250px;
+        height : 250px;
+        border : 1px solid black;
+        display: block;
+        margin-top:5px;
+        padding-left: 10px;
+    }
+
+    </style>
+</head>
+<body>
+
+    <h1>{{posted_user}}'s Quotes</h1>
+    {%if objs%}
+
+        {%for obj in objs%}
+
+
+                    <div class = "post">
+                        <h3>{{obj.author}} : {{obj.title}}</h3>
+                        <p>{{obj.content}}</p>
+
+
+                        <h4>{{obj.liked_user.all.count}} people like this  </h4>
+                        <form action = "{{obj.id}}/like" method = "post">
+                            {%csrf_token%}
+
+                            <input type="submit" value = "Like">
+                        </form>
+                        <br>
+                        {%if request.session.logged_in == obj.id%}
+                        <a href = "{{obj.id}}/delete">Delete</a>
+                        {%endif%}
+                   </div>
+
+        {%endfor%}
+    {%endif%}
+</body>
+</html>

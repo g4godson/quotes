@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+
+    <style>
+    .top{
+
+        width: 1000px;
+        height:100px;
+        display: block;
+    }
+    h2{
+        width:300px;
+        display: inline-block;
+    }
+
+    .t_right{
+        width:300px;
+        display: inline-block;
+        /* border : 1px solid black; */
+        margin-left: 300px;
+    }
+
+    div{
+        display: inline-block;
+        margin-left: 20px;
+    }
+
+    .quote_area{
+        width : 550px;
+        height : 600px;
+        /* border : 1px solid black; */
+        vertical-align: top;
+        display: inline-block;
+    }
+    .add{
+        width : 450px;
+        height : 600px;
+        /* border : 1px solid black; */
+        vertical-align: top;
+        display: inline-block;
+    }
+    .post{
+        width : 250px;
+        height : 250px;
+        border : 1px solid black;
+        display: block;
+        margin-top:5px;
+        padding-left: 10px;
+
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class = "top">
+        <h2>Welcome {{user}}</h2>
+
+        <div class = "t_right">
+                <div>
+                    <a href = "/{{request.session.logged_in}}/edit">Edit My Account</a>
+                </div>
+                <div>
+                    <form action="/logout" method = "post">
+                        {%csrf_token%}
+                        <input class = "logout" type="submit" name = "submit" value = "Logout">
+                    </form>
+                </div>
+
+        </div>
+    </div>
+
+    <div class= "quote_area">
+        {%for q in quotes%}
+            <div class = "post">
+                <h3>{{q.author}} : {{q.title}}</h3>
+                <p>{{q.content}}</p>
+                <h4>Posted by :<a href = '/{{q.id}}/show'>{{q.uploader.first_name}}</a> </h4>
+
+                <h5>{{q.liked_user.all.count}} people like this  </h5>
+
+                <!-- Doing Likes -->
+                <form action = "/{{q.id}}/like" method = "post">
+                    {%csrf_token%}
+
+                    <input type="submit" value = "Like">
+                </form>
+
+
+                <br>
+                {%if request.session.logged_in == q.id%}
+                <a href = "{{q.id}}/delete">Delete</a>
+                {%endif%}
+            </div>
+        {%endfor%}
+
+
+    </div>
+
+    <div class="add">
+        <form action="/add" method = "post">
+                {%csrf_token%}
+                <br><br>
+                <h3>Add a Quote :</h3>
+                <br><br><br><br>
+                <label for="author">Author : </label>
+                <input type="text" name="author" id="author">
+                <br><br><br><br><br>
+                <label for="content">Quote : </label>
+                <textarea name="content" id="content" cols="30" rows="10"></textarea>
+                <br><br><br><br><br>
+                <input type="submit" value = "Submit" name = "submit">
+        </form>
+
+    </div>
+</body>
+</html>
